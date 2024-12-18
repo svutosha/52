@@ -1,0 +1,115 @@
+ /* static/style.css */
+ body {
+  background-image: url('/static/images/background.jpg');
+  background-size: cover;       /* Изображение покрывает весь экран */
+  background-repeat: no-repeat; /* Отключаем повтор */
+  background-attachment: fixed; /* Фон остаётся на месте при прокрутке */
+  background-position: center;  /* Центрируем изображение */
+  color: #ffffff;               /* Устанавливаем цвет текста для контраста */
+}
+
+/* Базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #e0f7fa;
+    color: #333;
+  }
+  
+  /* Шапка сайта */
+  header {
+    background-color: #148073;
+    color: #fff;
+    padding: 1.5em;
+    text-align: center;
+  }
+  
+  /* Основная часть */
+  main {
+    padding: 2em;
+    max-width: 1000px;
+    margin: 20px auto;
+  }
+  
+  /* Секция лучшего университета */
+  .top-university {
+    background-color: #ffffff;
+    padding: 1.5em;
+    border-radius: 8px;
+    margin-bottom: 2em;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Список университетов */
+  .university-list {
+    margin-bottom: 2em;
+  }
+  
+  .university-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .university-item {
+    background-color: #ffffff;
+    padding: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .university-item h3 {
+    margin-bottom: 0.5em;
+    color: #00796b;
+  }
+  
+  /* Форма отзыва */
+  .review-form {
+    background-color: #ffffff;
+    padding: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review-form h2 {
+    margin-bottom: 1em;
+  }
+  
+  .review-form label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+  }
+  
+  .review-form input[type="text"],
+  .review-form textarea,
+  .review-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .review-form button {
+    background-color: #0b5da1;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .review-form button:hover {
+    background-color: #004d40;
+  }
+  
+ 

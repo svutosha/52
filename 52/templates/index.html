@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Университеты Варшавы</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    /* Основные стили */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-image: url('static/images/background.jpg'); /* Указание на файл с фоновым изображением */
+      background-size: cover; /* Заполнение всего экрана */
+      background-position: center; /* Центрирование изображения */
+      background-attachment: fixed; /* Фон не будет прокручиваться с контентом */
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      font-size: 16px;
+      min-height: 100vh;
+    }
+    header {
+      background-color: rgba(44, 62, 80, 0.8); /* полупрозрачный фон для читаемости текста */
+      color: #ecf0f1;
+      padding: 1.5em;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 1100px;
+    }
+    header h1 {
+      font-size: 2.4em;
+      font-weight: 600;
+      margin-bottom: 0.5em;
+    }
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin-bottom: 20px;
+    }
+    .top-universities, .university-info, .review-form, .review-list {
+      margin: 2em 0;
+      padding: 2em;
+      background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый фон для блоков */
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+    h2 {
+      color: #2c3e50;
+      font-size: 1.6em;
+      margin-bottom: 0.8em;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 0.3em;
+    }
+    .university-item {
+      padding: 1.5em 0;
+      border-bottom: 1px solid #ecf0f1;
+      transition: all 0.3s ease;
+    }
+    .university-item:hover {
+      background-color: #f1f1f1;
+    }
+    .university-item h3 {
+      font-size: 1.4em;
+      color: #34495e;
+      font-weight: 500;
+    }
+    .university-item p {
+      color: #7f8c8d;
+      font-size: 1em;
+    }
+    .review-form label {
+      display: block;
+      margin-top: 1.5em;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    .review-form input[type="text"], .review-form textarea, .review-form input[type="number"] {
+      width: 100%;
+      padding: 1em;
+      margin-top: 0.5em;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      background-color: #ecf0f1;
+      font-size: 1.1em;
+    }
+    .review-form button {
+      background-color: #19ad2f;
+      color: white;
+      padding: 1em 2em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1em;
+      margin-top: 1.5em;
+      transition: background-color 0.3s;
+    }
+    .review-form button:hover {
+      background-color: #149a27;
+    }
+    .review-item {
+      padding: 1em;
+      border-bottom: 1px solid #ecf0f1;
+      margin-bottom: 1em;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+      margin-top: 20px;
+      max-width: 1100px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Университеты Варшавы</h1>
+  </header>
+  <main>
+    <!-- Секция с пятью лучшими университетами -->
+    <section class="top-universities">
+      <h2>Лучшие университеты</h2>
+      <div>
+        {% for university in top_universities %}
+          <div class="university-item">
+            <strong>{{ university.name }}</strong><br>
+            Рейтинг: {{ university.rating }} / 5<br>
+            {{ university.description }}
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+    <!-- Карта -->
+    <div id="map"></div>
+    <!-- Список университетов -->
+    <section class="university-info">
+      <h2>Список университетов</h2>
+      <ul>
+        {% for university in universities %}
+          <li class="university-item">
+            <strong>{{ university.name }}</strong><br>
+            Рейтинг: {{ university.rating }} / 5<br>
+            {{ university.description }}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+    <!-- Форма добавления отзыва -->
+    <section class="review-form">
+      <h2>Оставить отзыв</h2>
+      <form id="reviewForm">
+        <label for="username">Ваше имя:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="rating">Рейтинг (1-5):</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required>
+        <label for="comment">Комментарий:</label>
+        <textarea id="comment" name="comment" rows="4" required></textarea>
+        <button type="submit">Отправить отзыв</button>
+      </form>
+    </section>
+    <!-- Список отзывов -->
+    <section class="review-list">
+      <h2>Отзывы</h2>
+      <div id="reviews">
+        <!-- Здесь будут отображаться отзывы -->
+      </div>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    // Инициализация карты
+    var map = L.map('map').setView([52.2297, 21.0122], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+    fetch('/api/universities')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(university => {
+          L.marker([university.latitude, university.longitude])
+            .addTo(map)
+            .bindPopup(`<b>${university.name}</b><br>Рейтинг: ${university.rating} / 5<br>${university.description}`);
+        });
+      });
+    // Обработчик формы для добавления отзыва
+    document.getElementById('reviewForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const rating = document.getElementById('rating').value;
+      const comment = document.getElementById('comment').value;
+      // Отправка данных на сервер
+      fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, rating, comment })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Добавление нового отзыва в список
+        const reviewList = document.getElementById('reviews');
+        const newReview = document.createElement('div');
+        newReview.classList.add('review-item');
+        newReview.innerHTML = `<strong>${data.username}</strong> (Рейтинг: ${data.rating}/5)<br>${data.comment}`;
+        reviewList.prepend(newReview); // Добавляем отзыв в начало списка
+        // Очищаем форму
+        document.getElementById('reviewForm').reset();
+      });
+    });
+    // Загрузка существующих отзывов при загрузке страницы
+    fetch('/api/reviews')
+      .then(response => response.json())
+      .then(data => {
+        const reviewList = document.getElementById('reviews');
+        data.forEach(review => {
+          const reviewItem = document.createElement('div');
+          reviewItem.classList.add('review-item');
+          reviewItem.innerHTML = `<strong>${review.username}</strong> (Рейтинг: ${review.rating}/5)<br>${review.comment}`;
+          reviewList.appendChild(reviewItem);
+        });
+      });
+  </script>
+</body>
+</html>
